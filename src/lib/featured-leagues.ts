@@ -1,10 +1,12 @@
 const FEATURED_LEAGUE_IDS = new Set([
   "1", "2", "3", "4", "9", "11", "13", "15",
-  "39", "61", "78", "88", "94", "128", "135", "140",
-  "253", "262", "307", "848"
+  "39", "61", "71", "72", "73", "78", "135", "140", "848"
 ]);
 
 export const FEATURED_LEAGUES = [
+  "Brasileirão Série A",
+  "Brasileirão Série B",
+  "Copa do Brasil",
   "UEFA Champions League",
   "UEFA Europa League",
   "UEFA Conference League",
@@ -13,21 +15,13 @@ export const FEATURED_LEAGUES = [
   "Serie A",
   "Bundesliga",
   "Ligue 1",
-  "Eredivisie",
-  "Primeira Liga",
   "CONMEBOL Libertadores",
   "CONMEBOL Sudamericana",
-  "Liga Profesional Argentina",
-  "MLS",
-  "Liga MX",
-  "Saudi Pro League",
   "World Cup",
   "UEFA Euro",
   "Copa America",
   "FIFA Club World Cup"
 ] as const;
-
-const NORMALIZED = new Set(FEATURED_LEAGUES.map(normalize));
 
 function normalize(value: string) {
   return value
@@ -44,28 +38,18 @@ export function isFeaturedLeague(
   country?: string | null,
   externalId?: string | null
 ) {
-  if (country?.trim().toLowerCase() === "brazil") return true;
   if (externalId && FEATURED_LEAGUE_IDS.has(externalId)) return true;
 
-  // Fallback is intentionally country-specific so "Premier League" from Uganda,
-  // for example, can never be mistaken for England's Premier League.
   const normalized = normalize(name);
   const c = country?.trim().toLowerCase() ?? "";
 
   const allowedByCountry: Record<string, Set<string>> = {
+    brazil: new Set(["serie a", "serie b", "copa do brasil"]),
     england: new Set(["premier league"]),
     spain: new Set(["la liga"]),
     italy: new Set(["serie a"]),
     germany: new Set(["bundesliga"]),
     france: new Set(["ligue 1"]),
-    netherlands: new Set(["eredivisie"]),
-    portugal: new Set(["primeira liga"]),
-    argentina: new Set(["liga profesional argentina"]),
-    usa: new Set(["mls"]),
-    "united states": new Set(["mls"]),
-    mexico: new Set(["liga mx"]),
-    "saudi-arabia": new Set(["saudi pro league"]),
-    "saudi arabia": new Set(["saudi pro league"]),
     world: new Set([
       "uefa champions league",
       "uefa europa league",
