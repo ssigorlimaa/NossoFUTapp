@@ -87,3 +87,51 @@ export interface MatchStatistics {
   expected_goals: number | null;
   updated_at: string;
 }
+
+export interface MatchLineup {
+  id: string;
+  match_id: string;
+  team_id: string;
+  player_external_id: string;
+  player_name: string;
+  player_photo: string | null;
+  number: number | null;
+  position: string | null;
+  grid: string | null;
+  starter: boolean;
+  captain: boolean;
+  substitute: boolean;
+  coach_name: string | null;
+  formation: string | null;
+  updated_at: string;
+}
+
+export interface MatchPlayerStats {
+  id: string;
+  match_id: string;
+  team_id: string;
+  player_external_id: string;
+  player_name: string;
+  minutes: number | null;
+  position: string | null;
+  rating: number | null;
+  substitute: boolean | null;
+  shots_total: number | null;
+  shots_on_target: number | null;
+  goals: number | null;
+  assists: number | null;
+  key_passes: number | null;
+  passes_total: number | null;
+  passes_accurate: number | null;
+  tackles: number | null;
+  interceptions: number | null;
+  duels_total: number | null;
+  duels_won: number | null;
+  dribbles_attempts: number | null;
+  dribbles_success: number | null;
+  fouls_committed: number | null;
+  fouls_drawn: number | null;
+  yellow_cards: number | null;
+  red_cards: number | null;
+  updated_at: string;
+}
