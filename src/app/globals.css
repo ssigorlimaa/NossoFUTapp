@@ -38,3 +38,51 @@ img {
 ::selection {
   background: rgba(245, 185, 27, 0.35);
 }
+
+
+/* Mobile app shell */
+html {
+  min-height: 100%;
+  background: #020817;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@media (min-width: 768px) {
+  body {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(245,185,27,.07), transparent 30%),
+      #020817;
+  }
+
+  body > div {
+    max-width: 480px;
+    min-height: 100dvh;
+    margin-inline: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 80px rgba(0,0,0,.45);
+  }
+}
+
+@keyframes startup-progress {
+  0% { transform: translateX(-140%); }
+  100% { transform: translateX(220%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
