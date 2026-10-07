@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import QueryProvider from "@/components/providers/QueryProvider";
 import ServiceWorkerRegistration from "@/components/providers/ServiceWorkerRegistration";
+import AppStartup from "@/components/providers/AppStartup";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body>
         <QueryProvider>{children}</QueryProvider>
+        <AppStartup />
         <ServiceWorkerRegistration />
       </body>
     </html>
