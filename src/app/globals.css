@@ -44,7 +44,7 @@ img {
 html {
   min-height: 100%;
   background: #020817;
-  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body {
