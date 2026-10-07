@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   CalendarDays,
@@ -84,6 +84,8 @@ export default function GamesPage() {
   const [competition, setCompetition] = useState("all");
   const [mode, setMode] = useState<Mode>("all");
   const [search, setSearch] = useState("");
+  const [syncingDate, setSyncingDate] = useState<string | null>(null);
+  const [syncAttempted, setSyncAttempted] = useState<Set<string>>(() => new Set());
 
   const query = useQuery({
     queryKey: ["games-page", date],
@@ -93,6 +95,31 @@ export default function GamesPage() {
   });
 
   const allMatches = featuredMatches(query.data?.matches ?? []);
+
+  useEffect(() => {
+    if (query.isLoading || query.isFetching || allMatches.length > 0 || syncAttempted.has(date)) return;
+
+    let cancelled = false;
+    setSyncAttempted((current) => new Set(current).add(date));
+    setSyncingDate(date);
+
+    fetch(`/api/football-sync?date=${date}`, { method: "POST" })
+      .then((response) => {
+        if (!response.ok) throw new Error("Falha ao sincronizar jogos.");
+        return response.json();
+      })
+      .then(() => {
+        if (!cancelled) void query.refetch();
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (!cancelled) setSyncingDate(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [allMatches.length, date, query, query.isFetching, query.isLoading, syncAttempted]);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
