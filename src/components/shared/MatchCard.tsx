@@ -134,7 +134,12 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
                 key={goal.id}
                 className="truncate text-[9px] font-bold leading-3 text-[#f5b91b]"
               >
-                ⚽ {goal.player_name ?? "Autor não informado"} {goal.minute}'
+                <span>
+                  ⚽ {goal.player_name ?? "Autor não informado"} {goal.minute}'
+                </span>
+                {goal.assist_player_name ? (
+                  <span className="ml-1 text-slate-500">· 🅰️ {goal.assist_player_name}</span>
+                ) : null}
               </p>
             ))}
           </div>
@@ -148,6 +153,19 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
     .sort((a, b) => a.minute - b.minute);
   const homeGoals = goalEvents.filter((event) => event.team_id === match.home_team_id);
   const awayGoals = goalEvents.filter((event) => event.team_id === match.away_team_id);
+
+  const cardEvents = (match.match_events ?? []).filter(
+    (event) => event.event_type === "YELLOW_CARD" || event.event_type === "RED_CARD"
+  );
+  const substitutionEvents = (match.match_events ?? []).filter(
+    (event) => event.event_type === "SUBSTITUTION"
+  );
+  const homeYellow = cardEvents.filter((event) => event.team_id === match.home_team_id && event.event_type === "YELLOW_CARD").length;
+  const awayYellow = cardEvents.filter((event) => event.team_id === match.away_team_id && event.event_type === "YELLOW_CARD").length;
+  const homeRed = cardEvents.filter((event) => event.team_id === match.home_team_id && event.event_type === "RED_CARD").length;
+  const awayRed = cardEvents.filter((event) => event.team_id === match.away_team_id && event.event_type === "RED_CARD").length;
+  const homeSubs = substitutionEvents.filter((event) => event.team_id === match.home_team_id).length;
+  const awaySubs = substitutionEvents.filter((event) => event.team_id === match.away_team_id).length;
 
   const leagueName = leagueDisplayName(
     match.league.name,
@@ -220,6 +238,14 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           goals={awayGoals}
         />
       </div>
+
+      {(cardEvents.length > 0 || substitutionEvents.length > 0) ? (
+        <div className="flex items-center justify-center gap-3 border-t border-white/[0.06] px-3.5 py-2 text-[9px] font-black text-slate-500">
+          {(homeYellow > 0 || awayYellow > 0) ? <span>🟨 {homeYellow}–{awayYellow}</span> : null}
+          {(homeRed > 0 || awayRed > 0) ? <span className="text-red-400">🟥 {homeRed}–{awayRed}</span> : null}
+          {(homeSubs > 0 || awaySubs > 0) ? <span>↔ {homeSubs}–{awaySubs}</span> : null}
+        </div>
+      ) : null}
 
       <div className="flex items-center justify-between border-t border-white/[0.06] px-3.5 py-2">
         <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-600">
