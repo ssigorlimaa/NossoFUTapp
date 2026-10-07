@@ -34,6 +34,7 @@ export interface Match {
   home_team_id: string;
   away_team_id: string;
   league_id: string;
+  external_id: string | null;
   home_score: number;
   away_score: number;
   status: MatchStatus;
