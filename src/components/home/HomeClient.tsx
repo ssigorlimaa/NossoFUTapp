@@ -9,6 +9,7 @@ import { getHomeDataClient } from "@/lib/supabase/client-queries";
 import { useMatchesRealtime } from "@/hooks/useMatchesRealtime";
 import BottomNav from "@/components/navigation/BottomNav";
 import MatchCard from "@/components/shared/MatchCard";
+import { featuredLeagues, featuredMatches } from "@/lib/featured-leagues";
 
 interface Props { initialDate: string; initialMatches: MatchWithRelations[]; initialLeagues: League[]; }
 
