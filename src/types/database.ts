@@ -48,6 +48,7 @@ export interface MatchWithRelations extends Match {
   home_team: Team;
   away_team: Team;
   league: League;
+  match_events?: MatchEvent[];
 }
 
 
