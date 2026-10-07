@@ -19,12 +19,21 @@ function leagueDisplayName(name: string, country: string, externalId: string | n
   const byId: Record<string, string> = {
     "71": "Brasileirão Série A",
     "72": "Brasileirão Série B",
-    "617": "Copa do Brasil Sub-20",
-    "1128": "Brasileiro Sub-17",
-    "1030": "Campeonato Goiano — Série B",
-    "1150": "Campeonato Gaúcho — Série C",
-    "1037": "Campeonato Paraibano — Série B",
-    "1203": "Campeonato Piauiense — Série B"
+    "73": "Copa do Brasil",
+    "2": "Champions League",
+    "3": "Europa League",
+    "848": "Conference League",
+    "39": "Premier League",
+    "140": "La Liga",
+    "135": "Serie A italiana",
+    "78": "Bundesliga",
+    "61": "Ligue 1",
+    "13": "Libertadores",
+    "11": "Sul-Americana",
+    "1": "Copa do Mundo",
+    "4": "Eurocopa",
+    "9": "Copa América",
+    "15": "Mundial de Clubes"
   };
 
   if (externalId && byId[externalId]) return byId[externalId];
@@ -33,14 +42,7 @@ function leagueDisplayName(name: string, country: string, externalId: string | n
     const replacements: Array<[RegExp, string]> = [
       [/^Serie A$/i, "Brasileirão Série A"],
       [/^Serie B$/i, "Brasileirão Série B"],
-      [/^Serie C$/i, "Brasileirão Série C"],
-      [/^Serie D$/i, "Brasileirão Série D"],
-      [/^Goiano - 1$/i, "Campeonato Goiano"],
-      [/^Gaúcho - 1$/i, "Campeonato Gaúcho"],
-      [/^Paulista - A1$/i, "Campeonato Paulista"],
-      [/^Carioca - 1$/i, "Campeonato Carioca"],
-      [/^Mineiro - 1$/i, "Campeonato Mineiro"],
-      [/^Paranaense - 1$/i, "Campeonato Paranaense"]
+      [/^Copa do Brasil$/i, "Copa do Brasil"]
     ];
 
     for (const [pattern, label] of replacements) {
