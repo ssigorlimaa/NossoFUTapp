@@ -3,6 +3,7 @@ export const matchSelect = `
   home_team_id,
   away_team_id,
   league_id,
+  external_id,
   home_score,
   away_score,
   status,
@@ -26,6 +27,19 @@ export const matchSelect = `
     external_id,
     logo_url,
     league_id,
+    created_at
+  ),
+  match_events:match_events!match_events_match_id_fkey (
+    id,
+    external_id,
+    match_id,
+    team_id,
+    player_name,
+    minute,
+    extra_minute,
+    event_type,
+    detail,
+    assist_player_name,
     created_at
   ),
   league:leagues!matches_league_id_fkey (
