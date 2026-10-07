@@ -48,3 +48,42 @@ export interface MatchWithRelations extends Match {
   away_team: Team;
   league: League;
 }
+
+
+export interface MatchEvent {
+  id: string;
+  external_id: string | null;
+  match_id: string;
+  team_id: string;
+  player_name: string | null;
+  minute: number;
+  extra_minute: number | null;
+  event_type: MatchEventType;
+  detail: string | null;
+  assist_player_name: string | null;
+  created_at: string;
+}
+
+export interface MatchStatistics {
+  id: string;
+  match_id: string;
+  team_id: string;
+  possession: number | null;
+  shots_total: number | null;
+  shots_on_target: number | null;
+  shots_off_target: number | null;
+  shots_blocked: number | null;
+  shots_inside_box: number | null;
+  shots_outside_box: number | null;
+  fouls: number | null;
+  corners: number | null;
+  offsides: number | null;
+  yellow_cards: number | null;
+  red_cards: number | null;
+  goalkeeper_saves: number | null;
+  passes_total: number | null;
+  passes_accurate: number | null;
+  pass_accuracy: number | null;
+  expected_goals: number | null;
+  updated_at: string;
+}
