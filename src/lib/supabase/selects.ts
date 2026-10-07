@@ -14,6 +14,7 @@ export const matchSelect = `
     id,
     name,
     short_name,
+    external_id,
     logo_url,
     league_id,
     created_at
@@ -22,6 +23,7 @@ export const matchSelect = `
     id,
     name,
     short_name,
+    external_id,
     logo_url,
     league_id,
     created_at
@@ -30,6 +32,7 @@ export const matchSelect = `
     id,
     name,
     country,
+    external_id,
     logo_url,
     created_at
   )
