@@ -11,6 +11,46 @@ function formatKickoff(value: string) {
   }).format(new Date(value));
 }
 
+function imageProxy(url: string | null) {
+  return url ? `/api/football-logo?url=${encodeURIComponent(url)}` : null;
+}
+
+function leagueDisplayName(name: string, country: string, externalId: string | null) {
+  const byId: Record<string, string> = {
+    "71": "Brasileirão Série A",
+    "72": "Brasileirão Série B",
+    "617": "Copa do Brasil Sub-20",
+    "1128": "Brasileiro Sub-17",
+    "1030": "Campeonato Goiano — Série B",
+    "1150": "Campeonato Gaúcho — Série C",
+    "1037": "Campeonato Paraibano — Série B",
+    "1203": "Campeonato Piauiense — Série B"
+  };
+
+  if (externalId && byId[externalId]) return byId[externalId];
+
+  if (country.toLowerCase() === "brazil") {
+    const replacements: Array<[RegExp, string]> = [
+      [/^Serie A$/i, "Brasileirão Série A"],
+      [/^Serie B$/i, "Brasileirão Série B"],
+      [/^Serie C$/i, "Brasileirão Série C"],
+      [/^Serie D$/i, "Brasileirão Série D"],
+      [/^Goiano - 1$/i, "Campeonato Goiano"],
+      [/^Gaúcho - 1$/i, "Campeonato Gaúcho"],
+      [/^Paulista - A1$/i, "Campeonato Paulista"],
+      [/^Carioca - 1$/i, "Campeonato Carioca"],
+      [/^Mineiro - 1$/i, "Campeonato Mineiro"],
+      [/^Paranaense - 1$/i, "Campeonato Paranaense"]
+    ];
+
+    for (const [pattern, label] of replacements) {
+      if (pattern.test(name)) return label;
+    }
+  }
+
+  return name;
+}
+
 export default function MatchCard({ match }: { match: MatchWithRelations }) {
   const [favorite, setFavorite] = useState(false);
   const [homeLogoError, setHomeLogoError] = useState(false);
@@ -37,7 +77,6 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
 
   const live = match.status === "IN_PLAY";
   const paused = match.status === "PAUSED";
-
   const status =
     live && match.current_minute != null
       ? `${match.current_minute}'`
@@ -51,34 +90,27 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
     name,
     shortName,
     logo,
-    side,
     failed,
     onLogoError
   }: {
     name: string;
     shortName: string | null;
     logo: string | null;
-    side: "home" | "away";
     failed: boolean;
     onLogoError: () => void;
   }) {
     const displayName = shortName || name;
+    const proxiedLogo = imageProxy(logo);
 
     return (
-      <div
-        className={[
-          "min-w-0 flex-1",
-          side === "home" ? "items-center text-center" : "items-center text-center"
-        ].join(" ")}
-      >
-        <div className="mx-auto grid size-[58px] place-items-center rounded-[18px] border border-white/10 bg-white shadow-[0_8px_22px_rgba(0,0,0,.2)]">
-          {logo && !failed ? (
+      <div className="min-w-0 flex-1 text-center">
+        <div className="mx-auto grid size-[62px] place-items-center rounded-[20px] border border-white/10 bg-white shadow-[0_10px_24px_rgba(0,0,0,.22)]">
+          {proxiedLogo && !failed ? (
             <img
-              src={logo}
+              src={proxiedLogo}
               alt={`Escudo do ${name}`}
-              className="size-[46px] object-contain"
+              className="size-[50px] object-contain"
               loading="lazy"
-              referrerPolicy="no-referrer"
               onError={onLogoError}
             />
           ) : (
@@ -87,13 +119,18 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
             </span>
           )}
         </div>
-
         <p className="mt-2 line-clamp-2 min-h-[32px] px-1 text-[12px] font-extrabold leading-4 text-white">
           {displayName}
         </p>
       </div>
     );
   }
+
+  const leagueName = leagueDisplayName(
+    match.league.name,
+    match.league.country,
+    match.league.external_id
+  );
 
   return (
     <article className="overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(145deg,#0c172b,#081121)] shadow-[0_14px_40px_rgba(0,0,0,.25)]">
@@ -102,36 +139,27 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           {match.league.logo_url ? (
             <div className="grid size-6 shrink-0 place-items-center rounded-lg bg-white/95">
               <img
-                src={match.league.logo_url}
+                src={imageProxy(match.league.logo_url) ?? ""}
                 alt=""
                 className="size-4 object-contain"
                 loading="lazy"
-                referrerPolicy="no-referrer"
               />
             </div>
           ) : (
             <Trophy className="size-4 shrink-0 text-[#f5b91b]" />
           )}
           <span className="truncate text-[10px] font-black uppercase tracking-[0.14em] text-slate-400">
-            {match.league.name}
+            {leagueName}
           </span>
         </div>
 
-        <div
-          className={[
-            "flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-black",
-            live
-              ? "bg-red-500/10 text-red-400"
-              : paused
-                ? "bg-amber-400/10 text-amber-300"
-                : "bg-white/[0.04] text-slate-400"
-          ].join(" ")}
-        >
-          {live ? (
-            <CircleDot className="size-3 animate-pulse" />
-          ) : (
-            <Clock3 className="size-3" />
-          )}
+        <div className={[
+          "flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-black",
+          live ? "bg-red-500/10 text-red-400" :
+          paused ? "bg-amber-400/10 text-amber-300" :
+          "bg-white/[0.04] text-slate-400"
+        ].join(" ")}>
+          {live ? <CircleDot className="size-3 animate-pulse" /> : <Clock3 className="size-3" />}
           {status}
         </div>
       </div>
@@ -141,28 +169,20 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           name={match.home_team.name}
           shortName={match.home_team.short_name}
           logo={match.home_team.logo_url}
-          side="home"
           failed={homeLogoError}
           onLogoError={() => setHomeLogoError(true)}
         />
 
         <div className="flex min-w-[82px] flex-col items-center pt-5">
           <div className="flex items-center gap-2 text-[30px] font-black leading-none tabular-nums">
-            <span className={live ? "text-[#f5b91b]" : "text-white"}>
-              {match.home_score}
-            </span>
+            <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.home_score}</span>
             <span className="text-[20px] text-slate-600">×</span>
-            <span className={live ? "text-[#f5b91b]" : "text-white"}>
-              {match.away_score}
-            </span>
+            <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.away_score}</span>
           </div>
-
-          <span
-            className={[
-              "mt-2 text-[9px] font-black uppercase tracking-[0.16em]",
-              live ? "text-red-400" : paused ? "text-amber-300" : "text-slate-600"
-            ].join(" ")}
-          >
+          <span className={[
+            "mt-2 text-[9px] font-black uppercase tracking-[0.16em]",
+            live ? "text-red-400" : paused ? "text-amber-300" : "text-slate-600"
+          ].join(" ")}>
             {live ? "ao vivo" : paused ? "intervalo" : match.status === "FINISHED" ? "encerrado" : "início"}
           </span>
         </div>
@@ -171,7 +191,6 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           name={match.away_team.name}
           shortName={match.away_team.short_name}
           logo={match.away_team.logo_url}
-          side="away"
           failed={awayLogoError}
           onLogoError={() => setAwayLogoError(true)}
         />
@@ -187,19 +206,16 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
                 ? "Jogo no intervalo"
                 : "Resultado final"}
         </span>
-
         <button
           type="button"
           onClick={toggleFavorite}
           aria-label={favorite ? "Remover dos favoritos" : "Favoritar partida"}
           className="grid size-8 place-items-center rounded-full text-slate-500 transition hover:bg-white/5 hover:text-[#f5b91b]"
         >
-          <Star
-            className={[
-              "size-[17px]",
-              favorite ? "fill-[#f5b91b] text-[#f5b91b]" : ""
-            ].join(" ")}
-          />
+          <Star className={[
+            "size-[17px]",
+            favorite ? "fill-[#f5b91b] text-[#f5b91b]" : ""
+          ].join(" ")} />
         </button>
       </div>
     </article>
