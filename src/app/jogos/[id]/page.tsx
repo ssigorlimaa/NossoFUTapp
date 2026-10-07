@@ -39,6 +39,7 @@ function statLabel(key: keyof MatchStatistics) {
 }
 
 export default function MatchDetailsPage() {
+  // Match Center: detalhes sincronizados sob demanda para preservar a cota da API.
   const params = useParams<{ id: string }>();
   const id = params.id;
   const [syncing, setSyncing] = useState(false);
