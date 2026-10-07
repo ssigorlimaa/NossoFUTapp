@@ -75,26 +75,37 @@ export default function MatchDetailsPage() {
 
   useEffect(() => {
     const match = query.data?.match;
-    if (!match?.external_id || attempted) return;
-    if (query.isFetching) return;
+    if (!match?.external_id || query.isFetching) return;
     const events = query.data?.events ?? [];
     const statistics = query.data?.statistics ?? [];
-    if (match.status === "SCHEDULED" && events.length === 0 && statistics.length === 0) {
+    if (match.status === "SCHEDULED") return;
+    if (attempted && statistics.length > 0 && match.status === "FINISHED") return;
+
+    let cancelled = false;
+    const sync = async () => {
+      if (cancelled) return;
+      setSyncing(true);
+      try {
+        await fetch(`/api/match-details?fixture=${match.external_id}`, { method: "POST", cache: "no-store" });
+        if (!cancelled) await query.refetch();
+      } catch {
+        // O Supabase continua exibindo o último estado disponível.
+      } finally {
+        if (!cancelled) setSyncing(false);
+      }
       setAttempted(true);
-      return;
+    };
+
+    void sync();
+    if (match.status === "IN_PLAY" || match.status === "PAUSED") {
+      const timer = window.setInterval(() => void sync(), 60_000);
+      return () => {
+        cancelled = true;
+        window.clearInterval(timer);
+      };
     }
-    if (events.length || statistics.length) {
-      setAttempted(true);
-      return;
-    }
-    setAttempted(true);
-    setSyncing(true);
-    fetch(`/api/match-details?fixture=${match.external_id}`, { method: "POST" })
-      .then((r) => r.json())
-      .then(() => void query.refetch())
-      .catch(() => undefined)
-      .finally(() => setSyncing(false));
-  }, [attempted, query.data, query.isFetching]);
+    return () => { cancelled = true; };
+  }, [attempted, query.data?.match?.external_id, query.data?.match?.status]);
 
   const data = query.data;
   const match = data?.match;
