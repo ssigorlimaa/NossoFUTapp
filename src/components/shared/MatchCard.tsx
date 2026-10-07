@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CircleDot, Clock3, Star, Trophy } from "lucide-react";
-import type { MatchWithRelations } from "@/types/database";
+import type { MatchEvent, MatchWithRelations } from "@/types/database";
 
 function formatKickoff(value: string) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -102,6 +102,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
     logo: string | null;
     failed: boolean;
     onLogoError: () => void;
+    goals: MatchEvent[];
   }) {
     const displayName = shortName || name;
     const proxiedLogo = imageProxy(logo);
@@ -126,9 +127,27 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
         <p className="mt-1.5 line-clamp-2 min-h-[30px] px-1 text-[11px] font-extrabold leading-4 text-white">
           {displayName}
         </p>
+        {goals.length > 0 ? (
+          <div className="mt-0.5 space-y-0.5 px-0.5">
+            {goals.slice(0, 2).map((goal) => (
+              <p
+                key={goal.id}
+                className="truncate text-[9px] font-bold leading-3 text-[#f5b91b]"
+              >
+                ⚽ {goal.player_name ?? "Autor não informado"} {goal.minute}'
+              </p>
+            ))}
+          </div>
+        ) : null
       </div>
     );
   }
+
+  const goalEvents = (match.match_events ?? [])
+    .filter((event) => event.event_type === "GOAL" && event.player_name)
+    .sort((a, b) => a.minute - b.minute);
+  const homeGoals = goalEvents.filter((event) => event.team_id === match.home_team_id);
+  const awayGoals = goalEvents.filter((event) => event.team_id === match.away_team_id);
 
   const leagueName = leagueDisplayName(
     match.league.name,
@@ -175,6 +194,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           logo={match.home_team.logo_url}
           failed={homeLogoError}
           onLogoError={() => setHomeLogoError(true)}
+          goals={homeGoals}
         />
 
         <div className="flex min-w-[70px] flex-col items-center pt-3">
@@ -197,6 +217,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           logo={match.away_team.logo_url}
           failed={awayLogoError}
           onLogoError={() => setAwayLogoError(true)}
+          goals={awayGoals}
         />
       </div>
 
