@@ -15,7 +15,7 @@ function label(dateKey:string){ return new Intl.DateTimeFormat("pt-BR",{weekday:
 export default function GamesPage(){
   const [date,setDate]=useState(saoPauloDateKey());
   const query=useQuery({queryKey:["games-page",date],queryFn:()=>getHomeDataClient(date),refetchInterval:60_000});
-  const matches=query.data?.matches??[];
+  const matches=featuredMatches(query.data?.matches??[]);
   return <div className="min-h-screen bg-[#020817] pb-24 text-white"><AppHeader onRefresh={()=>void query.refetch()} refreshing={query.isFetching}/><main className="mx-auto max-w-xl px-4 py-5">
     <div className="mb-4 flex items-center gap-2"><CalendarDays className="size-6 text-[#f5b91b]"/><div><h1 className="text-2xl font-black">Jogos</h1><p className="text-xs text-slate-500">Calendário completo por dia</p></div></div>
     <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/[0.07] bg-white/[0.03] p-2"><button onClick={()=>setDate(shift(date,-1))} className="grid size-10 place-items-center rounded-xl bg-white/[0.04] text-slate-300"><ChevronLeft className="size-5"/></button><div className="text-center"><p className="text-[10px] font-black uppercase tracking-widest text-[#f5b91b]">data selecionada</p><p className="mt-1 text-sm font-bold capitalize">{label(date)}</p></div><button onClick={()=>setDate(shift(date,1))} className="grid size-10 place-items-center rounded-xl bg-white/[0.04] text-slate-300"><ChevronRight className="size-5"/></button></div>
