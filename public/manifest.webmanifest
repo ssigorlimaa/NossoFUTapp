@@ -1,13 +1,18 @@
 {
+  "id": "/",
   "name": "NossoFUT",
   "short_name": "NossoFUT",
-  "description": "Futebol em tempo real.",
+  "description": "Placares, jogos e futebol em tempo real.",
   "lang": "pt-BR",
+  "dir": "ltr",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "portrait",
   "background_color": "#020817",
   "theme_color": "#020817",
+  "categories": ["sports", "entertainment"],
   "icons": [
     {
       "src": "/icon.svg",
