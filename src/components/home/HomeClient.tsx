@@ -35,8 +35,10 @@ export default function HomeClient({initialDate,initialMatches,initialLeagues}:P
   });
   useMatchesRealtime();
 
-  const matches=query.data?.matches??[];
-  const leagues=query.data?.leagues??[];
+  const allMatches=query.data?.matches??[];
+  const allLeagues=query.data?.leagues??[];
+  const matches=featuredMatches(allMatches);
+  const leagues=featuredLeagues(allLeagues);
   const filtered=useMemo(()=>leagueId==="all"?matches:matches.filter(m=>m.league_id===leagueId),[matches,leagueId]);
   const live=filtered.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED");
   const upcoming=filtered.filter(m=>m.status==="SCHEDULED").slice(0,8);
