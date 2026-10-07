@@ -18,7 +18,8 @@ import {
   Trophy,
   ListFilter,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  RefreshCw
 } from "lucide-react";
 import type { League, MatchWithRelations } from "@/types/database";
 import { getHomeDataClient } from "@/lib/supabase/client-queries";
@@ -245,7 +246,9 @@ export default function HomeClient({
       selectedDate === initialDate
         ? { matches: initialMatches, leagues: initialLeagues }
         : undefined,
-    placeholderData: (previous) => previous
+    placeholderData: (previous) => previous,
+    refetchInterval: 60_000,
+    refetchOnReconnect: true
   });
 
   useMatchesRealtime();
@@ -278,6 +281,15 @@ export default function HomeClient({
             </div>
           </div>
           <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => void query.refetch()}
+              disabled={query.isFetching}
+              aria-label="Atualizar jogos"
+              className="grid size-9 place-items-center rounded-full border border-white/[0.08] bg-white/[0.035] text-slate-400 transition hover:text-[#f5b91b] disabled:opacity-50"
+            >
+              <RefreshCw className={`size-4 ${query.isFetching ? "animate-spin" : ""}`} />
+            </button>
             <button type="button" aria-label="Pesquisar" className="grid size-10 place-items-center rounded-full text-slate-300">
               <Search className="size-5" />
             </button>
