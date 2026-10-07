@@ -3,7 +3,7 @@ import { Bell, RefreshCw, Search } from "lucide-react";
 
 export default function AppHeader({ onRefresh, refreshing = false }: { onRefresh?: () => void; refreshing?: boolean }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-[#020817]/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-[#020817] pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-[68px] max-w-xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="grid size-10 place-items-center rounded-2xl bg-gradient-to-br from-[#f5b91b] to-[#ff7a00] text-[#06101d] shadow-[0_8px_25px_rgba(245,185,27,.2)]">
