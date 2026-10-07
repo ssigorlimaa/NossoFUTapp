@@ -1,14 +1,4 @@
 export const FEATURED_LEAGUES = [
-  // Brasil
-  "Brasileirão Série A",
-  "Brasileirão Série B",
-  "Copa do Brasil",
-  "Paulista",
-  "Carioca",
-  "Mineiro",
-  "Gaúcho",
-  "Paranaense",
-  // Europa
   "UEFA Champions League",
   "UEFA Europa League",
   "UEFA Conference League",
@@ -19,16 +9,12 @@ export const FEATURED_LEAGUES = [
   "Ligue 1",
   "Eredivisie",
   "Primeira Liga",
-  // América do Sul
   "CONMEBOL Libertadores",
   "CONMEBOL Sudamericana",
   "Liga Profesional Argentina",
-  // América do Norte
   "MLS",
   "Liga MX",
-  // Ásia
   "Saudi Pro League",
-  // Seleções / grandes torneios
   "World Cup",
   "UEFA Euro",
   "Copa America",
@@ -47,15 +33,26 @@ function normalize(value: string) {
     .trim();
 }
 
-export function isFeaturedLeague(name: string) {
+export function isFeaturedLeague(name: string, country?: string) {
+  if (country?.trim().toLowerCase() === "brazil") return true;
+
   const normalized = normalize(name);
-  return NORMALIZED.has(normalized) || FEATURED_LEAGUES.some((league) => normalized.includes(normalize(league)));
+  return (
+    NORMALIZED.has(normalized) ||
+    FEATURED_LEAGUES.some((league) => normalized.includes(normalize(league)))
+  );
 }
 
-export function featuredLeagues<T extends { name: string }>(leagues: T[]) {
-  return leagues.filter((league) => isFeaturedLeague(league.name));
+export function featuredLeagues<T extends { name: string; country?: string | null }>(
+  leagues: T[]
+) {
+  return leagues.filter((league) => isFeaturedLeague(league.name, league.country ?? undefined));
 }
 
-export function featuredMatches<T extends { league: { name: string } }>(matches: T[]) {
-  return matches.filter((match) => isFeaturedLeague(match.league.name));
+export function featuredMatches<
+  T extends { league: { name: string; country?: string | null } }
+>(matches: T[]) {
+  return matches.filter((match) =>
+    isFeaturedLeague(match.league.name, match.league.country ?? undefined)
+  );
 }
