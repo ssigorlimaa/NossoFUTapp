@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Bell, ChevronLeft, ChevronRight, Clock3, ListFilter, RefreshCw, Search, Sparkles, Trophy } from "lucide-react";
 import type { League, MatchWithRelations } from "@/types/database";
@@ -43,6 +43,40 @@ export default function HomeClient({initialDate,initialMatches,initialLeagues}:P
   const live=filtered.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED");
   const upcoming=filtered.filter(m=>m.status==="SCHEDULED").slice(0,8);
   const liveCount=matches.filter(m=>m.status==="IN_PLAY").length;
+  const liveFixtureIds=live
+    .map((match) => match.external_id)
+    .filter((id): id is string => Boolean(id))
+    .slice(0, 20);
+
+  useEffect(() => {
+    if (!isToday(selectedDate) || liveFixtureIds.length === 0) return;
+
+    let cancelled = false;
+
+    const syncEvents = async () => {
+      try {
+        const request = globalThis["fetch"];
+        const response = await request(`/api/live-events?fixtures=${liveFixtureIds.join(",")}`, {
+          method: "POST",
+          cache: "no-store",
+        });
+        if (response.ok && !cancelled) {
+          await query.refetch();
+        }
+      } catch {
+        // Realtime e a próxima sincronização continuam mantendo o card atualizado.
+      }
+    };
+
+    void syncEvents();
+    const timer = window.setInterval(() => void syncEvents(), 60_000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [selectedDate, liveFixtureIds.join(","), query.refetch]);
+
   const days=[-2,-1,0,1,2].map(n=>shiftDate(selectedDate,n));
 
   return <div className="min-h-screen bg-[#020817] pb-24 text-white">
