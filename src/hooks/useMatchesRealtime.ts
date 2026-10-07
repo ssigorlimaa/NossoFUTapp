@@ -12,7 +12,7 @@ export function useMatchesRealtime() {
 
     const invalidateMatches = () => {
       void queryClient.invalidateQueries({ queryKey: ["home-data"] });
-      void queryClient.invalidateQueries({ queryKey: ["live-data"] });
+      void queryClient.invalidateQueries({ queryKey: ["live-page"] });
       void queryClient.invalidateQueries({ queryKey: ["games-page"] });
     };
 
