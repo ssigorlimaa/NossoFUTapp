@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   },
   description: "Placares, jogos e futebol em tempo real.",
   applicationName: "NossoFUT",
+  appleWebApp: {
+    capable: true,
+    title: "NossoFUT",
+    statusBarStyle: "black-translucent"
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: "/icon.svg",
