@@ -7,7 +7,7 @@ import { getHomeDataClient } from "@/lib/supabase/client-queries";
 import { saoPauloDateKey } from "@/lib/date";
 import MatchCard from "@/components/shared/MatchCard";
 import AppHeader from "@/components/shared/AppHeader";
-import BottomNav from "@/components/shared/BottomNav";
+import BottomNav from "@/components/navigation/BottomNav";
 import { featuredMatches } from "@/lib/featured-leagues";
 
 export default function SearchPage() {
