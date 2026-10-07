@@ -106,12 +106,12 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
 
     return (
       <div className="min-w-0 flex-1 text-center">
-        <div className="relative mx-auto grid size-[64px] place-items-center rounded-[20px] border border-white/20 bg-[linear-gradient(145deg,#ffffff,#dfe6ee)] shadow-[inset_2px_2px_4px_rgba(255,255,255,.95),inset_-4px_-5px_8px_rgba(15,23,42,.18),0_12px_24px_rgba(0,0,0,.28)] transition-transform duration-200 group-hover:scale-[1.04] group-active:scale-95">
+        <div className="relative mx-auto grid size-[58px] place-items-center rounded-[18px] border border-white/20 bg-[linear-gradient(145deg,#ffffff,#dfe6ee)] shadow-[inset_2px_2px_4px_rgba(255,255,255,.95),inset_-4px_-5px_8px_rgba(15,23,42,.18),0_12px_24px_rgba(0,0,0,.28)] transition-transform duration-200 group-hover:scale-[1.04] group-active:scale-95">
           {proxiedLogo && !failed ? (
             <img
               src={proxiedLogo}
               alt={`Escudo do ${name}`}
-              className="relative z-10 size-[50px] object-contain drop-shadow-[0_5px_4px_rgba(15,23,42,.32)]"
+              className="relative z-10 size-[46px] object-contain drop-shadow-[0_5px_4px_rgba(15,23,42,.32)]"
               loading="lazy"
               onError={onLogoError}
             />
@@ -136,7 +136,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
 
   return (
     <article className="group overflow-hidden rounded-[26px] border border-white/[0.09] bg-[radial-gradient(circle_at_50%_42%,rgba(245,185,27,.045),transparent_35%),linear-gradient(145deg,#101d34,#07101f)] shadow-[0_18px_45px_rgba(0,0,0,.34)] transition duration-200 hover:-translate-y-0.5 hover:border-[#f5b91b]/20 hover:shadow-[0_22px_55px_rgba(0,0,0,.42)] active:scale-[.995]">
-      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
+      <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2.5">
         <div className="flex min-w-0 items-center gap-2">
           {match.league.logo_url ? (
             <div className="grid size-7 shrink-0 place-items-center rounded-xl border border-white/60 bg-[linear-gradient(145deg,#fff,#d9e1ea)] shadow-[inset_1px_1px_3px_white,inset_-2px_-2px_4px_rgba(15,23,42,.18),0_4px_9px_rgba(0,0,0,.25)]">
@@ -166,7 +166,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-2.5 px-4 py-4">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-2 px-3.5 py-3.5">
         <Team
           name={match.home_team.name}
           shortName={match.home_team.short_name}
@@ -175,10 +175,10 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           onLogoError={() => setHomeLogoError(true)}
         />
 
-        <div className="flex min-w-[76px] flex-col items-center pt-4">
-          <div className="flex items-center gap-2 text-[28px] font-black leading-none tabular-nums">
+        <div className="flex min-w-[70px] flex-col items-center pt-3">
+          <div className="flex items-center gap-2 text-[26px] font-black leading-none tabular-nums">
             <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.home_score}</span>
-            <span className="text-[18px] text-slate-600">×</span>
+            <span className="text-[17px] text-slate-600">×</span>
             <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.away_score}</span>
           </div>
           <span className={[
@@ -198,7 +198,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
         />
       </div>
 
-      <div className="flex items-center justify-between border-t border-white/[0.06] px-4 py-2.5">
+      <div className="flex items-center justify-between border-t border-white/[0.06] px-3.5 py-2">
         <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-slate-600">
           {match.status === "SCHEDULED"
             ? `Começa às ${formatKickoff(match.match_time)}`
