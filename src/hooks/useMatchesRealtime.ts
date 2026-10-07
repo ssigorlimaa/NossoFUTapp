@@ -10,25 +10,23 @@ export function useMatchesRealtime() {
   useEffect(() => {
     const supabase = createClient();
 
+    const invalidateMatches = () => {
+      void queryClient.invalidateQueries({ queryKey: ["home-data"] });
+      void queryClient.invalidateQueries({ queryKey: ["live-data"] });
+      void queryClient.invalidateQueries({ queryKey: ["games-page"] });
+    };
+
     const channel = supabase
       .channel("nossofut-matches-live")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "matches" },
-        () => {
-          queryClient.invalidateQueries({
-            queryKey: ["home-data"]
-          });
-        }
+        invalidateMatches
       )
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "match_events" },
-        () => {
-          queryClient.invalidateQueries({
-            queryKey: ["home-data"]
-          });
-        }
+        invalidateMatches
       )
       .subscribe((status) => {
         if (status === "CHANNEL_ERROR") {
