@@ -106,17 +106,17 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
 
     return (
       <div className="min-w-0 flex-1 text-center">
-        <div className="mx-auto grid size-[62px] place-items-center rounded-[20px] border border-white/10 bg-white shadow-[0_10px_24px_rgba(0,0,0,.22)]">
+        <div className="relative mx-auto grid size-[72px] place-items-center rounded-[23px] border border-white/20 bg-[linear-gradient(145deg,#ffffff,#dfe6ee)] shadow-[inset_2px_2px_4px_rgba(255,255,255,.95),inset_-4px_-5px_8px_rgba(15,23,42,.18),0_12px_24px_rgba(0,0,0,.28)] transition-transform duration-200 group-hover:scale-[1.04] group-active:scale-95">
           {proxiedLogo && !failed ? (
             <img
               src={proxiedLogo}
               alt={`Escudo do ${name}`}
-              className="size-[50px] object-contain"
+              className="relative z-10 size-[56px] object-contain drop-shadow-[0_5px_4px_rgba(15,23,42,.32)]"
               loading="lazy"
               onError={onLogoError}
             />
           ) : (
-            <span className="text-[11px] font-black text-slate-800">
+            <span className="relative z-10 text-[11px] font-black text-slate-800">
               {(name.slice(0, 3) || "TIM").toUpperCase()}
             </span>
           )}
@@ -135,15 +135,15 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
   );
 
   return (
-    <article className="overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(145deg,#0c172b,#081121)] shadow-[0_14px_40px_rgba(0,0,0,.25)]">
+    <article className="group overflow-hidden rounded-[26px] border border-white/[0.09] bg-[radial-gradient(circle_at_50%_42%,rgba(245,185,27,.045),transparent_35%),linear-gradient(145deg,#101d34,#07101f)] shadow-[0_18px_45px_rgba(0,0,0,.34)] transition duration-200 hover:-translate-y-0.5 hover:border-[#f5b91b]/20 hover:shadow-[0_22px_55px_rgba(0,0,0,.42)] active:scale-[.995]">
       <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           {match.league.logo_url ? (
-            <div className="grid size-6 shrink-0 place-items-center rounded-lg bg-white/95">
+            <div className="grid size-7 shrink-0 place-items-center rounded-xl border border-white/60 bg-[linear-gradient(145deg,#fff,#d9e1ea)] shadow-[inset_1px_1px_3px_white,inset_-2px_-2px_4px_rgba(15,23,42,.18),0_4px_9px_rgba(0,0,0,.25)]">
               <img
                 src={imageProxy(match.league.logo_url) ?? ""}
                 alt=""
-                className="size-4 object-contain"
+                className="size-[18px] object-contain drop-shadow-[0_2px_2px_rgba(15,23,42,.3)]"
                 loading="lazy"
               />
             </div>
