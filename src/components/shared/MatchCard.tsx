@@ -106,12 +106,12 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
 
     return (
       <div className="min-w-0 flex-1 text-center">
-        <div className="relative mx-auto grid size-[72px] place-items-center rounded-[23px] border border-white/20 bg-[linear-gradient(145deg,#ffffff,#dfe6ee)] shadow-[inset_2px_2px_4px_rgba(255,255,255,.95),inset_-4px_-5px_8px_rgba(15,23,42,.18),0_12px_24px_rgba(0,0,0,.28)] transition-transform duration-200 group-hover:scale-[1.04] group-active:scale-95">
+        <div className="relative mx-auto grid size-[64px] place-items-center rounded-[20px] border border-white/20 bg-[linear-gradient(145deg,#ffffff,#dfe6ee)] shadow-[inset_2px_2px_4px_rgba(255,255,255,.95),inset_-4px_-5px_8px_rgba(15,23,42,.18),0_12px_24px_rgba(0,0,0,.28)] transition-transform duration-200 group-hover:scale-[1.04] group-active:scale-95">
           {proxiedLogo && !failed ? (
             <img
               src={proxiedLogo}
               alt={`Escudo do ${name}`}
-              className="relative z-10 size-[56px] object-contain drop-shadow-[0_5px_4px_rgba(15,23,42,.32)]"
+              className="relative z-10 size-[50px] object-contain drop-shadow-[0_5px_4px_rgba(15,23,42,.32)]"
               loading="lazy"
               onError={onLogoError}
             />
@@ -121,7 +121,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
             </span>
           )}
         </div>
-        <p className="mt-2 line-clamp-2 min-h-[32px] px-1 text-[12px] font-extrabold leading-4 text-white">
+        <p className="mt-1.5 line-clamp-2 min-h-[30px] px-1 text-[11px] font-extrabold leading-4 text-white">
           {displayName}
         </p>
       </div>
@@ -166,7 +166,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-3 px-4 py-5">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-2.5 px-4 py-4">
         <Team
           name={match.home_team.name}
           shortName={match.home_team.short_name}
@@ -175,14 +175,14 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
           onLogoError={() => setHomeLogoError(true)}
         />
 
-        <div className="flex min-w-[82px] flex-col items-center pt-5">
-          <div className="flex items-center gap-2 text-[30px] font-black leading-none tabular-nums">
+        <div className="flex min-w-[76px] flex-col items-center pt-4">
+          <div className="flex items-center gap-2 text-[28px] font-black leading-none tabular-nums">
             <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.home_score}</span>
-            <span className="text-[20px] text-slate-600">×</span>
+            <span className="text-[18px] text-slate-600">×</span>
             <span className={live ? "text-[#f5b91b]" : "text-white"}>{match.away_score}</span>
           </div>
           <span className={[
-            "mt-2 text-[9px] font-black uppercase tracking-[0.16em]",
+            "mt-1.5 text-[9px] font-black uppercase tracking-[0.16em]",
             live ? "text-red-400" : paused ? "text-amber-300" : "text-slate-600"
           ].join(" ")}>
             {live ? "ao vivo" : paused ? "intervalo" : match.status === "FINISHED" ? "encerrado" : "início"}
