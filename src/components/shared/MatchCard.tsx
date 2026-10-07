@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CircleDot, Clock3, Star, Trophy } from "lucide-react";
 import type { MatchWithRelations } from "@/types/database";
 
@@ -54,6 +55,7 @@ function leagueDisplayName(name: string, country: string, externalId: string | n
 }
 
 export default function MatchCard({ match }: { match: MatchWithRelations }) {
+  const router = useRouter();
   const [favorite, setFavorite] = useState(false);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
@@ -135,7 +137,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
   );
 
   return (
-    <article className="group overflow-hidden rounded-[26px] border border-white/[0.09] bg-[radial-gradient(circle_at_50%_42%,rgba(245,185,27,.045),transparent_35%),linear-gradient(145deg,#101d34,#07101f)] shadow-[0_18px_45px_rgba(0,0,0,.34)] transition duration-200 hover:-translate-y-0.5 hover:border-[#f5b91b]/20 hover:shadow-[0_22px_55px_rgba(0,0,0,.42)] active:scale-[.995]">
+    <article onClick={() => router.push(`/jogos/${match.id}`)} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === "Enter") router.push(`/jogos/${match.id}`); }} className="group cursor-pointer overflow-hidden rounded-[26px] border border-white/[0.09] bg-[radial-gradient(circle_at_50%_42%,rgba(245,185,27,.045),transparent_35%),linear-gradient(145deg,#101d34,#07101f)] shadow-[0_18px_45px_rgba(0,0,0,.34)] transition duration-200 hover:-translate-y-0.5 hover:border-[#f5b91b]/20 hover:shadow-[0_22px_55px_rgba(0,0,0,.42)] active:scale-[.995]">
       <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2.5">
         <div className="flex min-w-0 items-center gap-2">
           {match.league.logo_url ? (
@@ -210,7 +212,7 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
         </span>
         <button
           type="button"
-          onClick={toggleFavorite}
+          onClick={(event) => { event.stopPropagation(); toggleFavorite(); }}
           aria-label={favorite ? "Remover dos favoritos" : "Favoritar partida"}
           className="grid size-8 place-items-center rounded-full text-slate-500 transition hover:bg-white/5 hover:text-[#f5b91b]"
         >
