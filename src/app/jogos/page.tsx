@@ -19,13 +19,13 @@ import MatchCard from "@/components/shared/MatchCard";
 import AppHeader from "@/components/shared/AppHeader";
 import BottomNav from "@/components/navigation/BottomNav";
 import { saoPauloDateKey } from "@/lib/date";
-import { featuredMatches, featuredLeagues } from "@/lib/featured-leagues";
+import { featuredMatches } from "@/lib/featured-leagues";
 import type { MatchWithRelations } from "@/types/database";
 
 const COMPETITIONS = [
   ["all", "Todos"],
-  ["71", "Brasileirão A"],
-  ["72", "Brasileirão B"],
+  ["71", "Brasileirão Série A"],
+  ["72", "Brasileirão Série B"],
   ["73", "Copa do Brasil"],
   ["2", "Champions"],
   ["3", "Europa League"],
@@ -289,7 +289,7 @@ export default function GamesPage() {
               <div key={group.name}>
                 <div className="mb-2 flex items-center gap-2 px-1">
                   <div className="grid size-8 place-items-center rounded-xl border border-white/15 bg-[linear-gradient(145deg,#fff,#dbe3eb)] shadow-[inset_1px_1px_3px_white,inset_-2px_-2px_4px_rgba(15,23,42,.16),0_5px_12px_rgba(0,0,0,.22)]">
-                    {group.logo ? <img src={group.logo} alt="" className="size-5 object-contain drop-shadow-[0_2px_2px_rgba(15,23,42,.3)]" /> : <Trophy className="size-4 text-slate-700" />}
+                    {group.logo ? <img src={`/api/football-logo?url=${encodeURIComponent(group.logo)}`} alt="" className="size-5 object-contain drop-shadow-[0_2px_2px_rgba(15,23,42,.3)]" /> : <Trophy className="size-4 text-slate-700" />}
                   </div>
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[0.14em] text-slate-300">{group.name}</p>
