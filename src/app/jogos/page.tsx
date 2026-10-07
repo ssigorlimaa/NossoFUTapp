@@ -93,7 +93,6 @@ export default function GamesPage() {
   });
 
   const allMatches = featuredMatches(query.data?.matches ?? []);
-  const leagues = featuredLeagues(query.data?.leagues ?? []);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
