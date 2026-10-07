@@ -76,11 +76,13 @@ export default function MatchDetailsPage() {
     const match = query.data?.match;
     if (!match?.external_id || attempted) return;
     if (query.isFetching) return;
-    if (match.status === "SCHEDULED" && query.data.events.length === 0 && query.data.statistics.length === 0) {
+    const events = query.data?.events ?? [];
+    const statistics = query.data?.statistics ?? [];
+    if (match.status === "SCHEDULED" && events.length === 0 && statistics.length === 0) {
       setAttempted(true);
       return;
     }
-    if (query.data.events.length || query.data.statistics.length) {
+    if (events.length || statistics.length) {
       setAttempted(true);
       return;
     }
@@ -91,7 +93,7 @@ export default function MatchDetailsPage() {
       .then(() => void query.refetch())
       .catch(() => undefined)
       .finally(() => setSyncing(false));
-  }, [attempted, query]);
+  }, [attempted, query.data, query.isFetching]);
 
   const data = query.data;
   const match = data?.match;
