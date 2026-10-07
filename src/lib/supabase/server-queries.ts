@@ -13,7 +13,7 @@ export async function getHomeData(date: string): Promise<{ matches: MatchWithRel
   const { start, end } = dayBounds(date);
   const [matchesResult, leaguesResult] = await Promise.all([
     supabase.from("matches").select(matchSelect).gte("match_time", start).lte("match_time", end).order("match_time", { ascending: true }).limit(100),
-    supabase.from("leagues").select("id, name, country, logo_url, created_at").order("name", { ascending: true }).limit(100),
+    supabase.from("leagues").select("id, name, country, external_id, logo_url, created_at").order("name", { ascending: true }).limit(100),
   ]);
   if (matchesResult.error) console.error("Erro ao carregar partidas:", matchesResult.error);
   if (leaguesResult.error) console.error("Erro ao carregar ligas:", leaguesResult.error);
