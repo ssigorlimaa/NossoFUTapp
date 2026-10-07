@@ -18,14 +18,14 @@ export default function AppStartup() {
     setVisible(true);
     sessionStorage.setItem(key, "1");
 
-    const timer = window.setTimeout(() => setVisible(false), standalone ? 900 : 1200);
+    const timer = window.setTimeout(() => setVisible(false), standalone ? 650 : 850);
     return () => window.clearTimeout(timer);
   }, []);
 
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] grid place-items-center bg-[#020817] px-6">
+    <div className="fixed inset-0 z-[9999] grid place-items-center bg-[#020817] px-6 will-change-opacity">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(245,185,27,.16),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(15,43,78,.42),transparent_48%)]" />
       <div className="relative flex flex-col items-center">
         <div className="relative grid size-24 place-items-center rounded-[30px] border border-white/20 bg-[linear-gradient(145deg,#172b49,#07111f)] shadow-[0_24px_70px_rgba(0,0,0,.55),inset_1px_1px_0_rgba(255,255,255,.12)]">
