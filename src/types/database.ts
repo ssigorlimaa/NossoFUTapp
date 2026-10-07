@@ -14,6 +14,7 @@ export interface League {
   id: string;
   name: string;
   country: string;
+  external_id: string | null;
   logo_url: string | null;
   created_at: string;
 }
@@ -22,6 +23,7 @@ export interface Team {
   id: string;
   name: string;
   short_name: string | null;
+  external_id: string | null;
   logo_url: string | null;
   league_id: string;
   created_at: string;
