@@ -95,7 +95,8 @@ export default function MatchCard({ match }: { match: MatchWithRelations }) {
     shortName,
     logo,
     failed,
-    onLogoError
+    onLogoError,
+    goals
   }: {
     name: string;
     shortName: string | null;
